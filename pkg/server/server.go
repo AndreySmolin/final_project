@@ -1,6 +1,7 @@
 package server
 
 import (
+	"final_project/pkg/api"
 	"log"
 	"net/http"
 	"time"
@@ -13,10 +14,7 @@ type Server struct {
 
 func NewRouter(logger *log.Logger) *Server {
 	router := http.NewServeMux()
-	fs := http.FileServer(http.Dir("./web"))
-	router.Handle("/css/", fs)
-	router.Handle("/js/", fs)
-	router.Handle("/", fs)
+	api.Init(router)
 	httpServer := &http.Server{
 		Addr:         ":7540",
 		Handler:      router,
