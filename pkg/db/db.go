@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"os"
 
@@ -34,7 +35,6 @@ func Init(dbNAME string) error {
 		if err != nil {
 			return err
 		}
-		defer db.Close()
 		_, err = CreateTable(db)
 		if err != nil {
 			return err
@@ -45,7 +45,6 @@ func Init(dbNAME string) error {
 	if err != nil {
 		return err
 	}
-	defer db.Close()
 	return nil
 }
 
@@ -55,4 +54,11 @@ func CreateTable(db *sql.DB) (sql.Result, error) {
 		return nil, fmt.Errorf("error creating the table: %w", err)
 	}
 	return result, nil
+}
+func CloseDB() error {
+	err := db.Close()
+	if err != nil {
+		return errors.New("database closure error")
+	}
+	return nil
 }

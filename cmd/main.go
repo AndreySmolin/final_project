@@ -9,6 +9,7 @@ import (
 
 func main() {
 	err := db.Init("./internal/db/scheduler.db")
+	defer db.CloseDB()
 	logger := log.New(os.Stdout, "Server:", log.LstdFlags)
 	server := server.NewRouter(logger)
 	logger.Print("Start port:7540")

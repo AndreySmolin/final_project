@@ -58,5 +58,5 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 }
 
 func afterNow(date, now time.Time) bool {
-	return date.After(now)
+	return date.Format(FormatDate) > now.Format(FormatDate)
 }
