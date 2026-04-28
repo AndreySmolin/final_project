@@ -35,3 +35,6 @@ func taskHandler(w http.ResponseWriter, r *http.Request) {
 		addTaskHandler(w, r)
 	}
 }
+func tasksHandler(w http.ResponseWriter, r *http.Request) {
+	getTasksHandler(w, r)
+}
