@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// putTaskHandler функция для редактирования задач
 func putTaskHandler(w http.ResponseWriter, r *http.Request) {
 	var task db.Task
 	var errorMessage ErrorMessage

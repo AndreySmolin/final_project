@@ -6,6 +6,7 @@ import (
 
 const FormatDate string = "20060102"
 
+// Init функция для регистрации API обработчиков
 func Init(router *http.ServeMux) {
 	fs := http.FileServer(http.Dir("./web"))
 	router.Handle("/css/", fs)

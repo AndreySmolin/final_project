@@ -7,11 +7,13 @@ import (
 	"time"
 )
 
+// Server структура сервера
 type Server struct {
 	Logger *log.Logger
 	Http   *http.Server
 }
 
+// NewRouter функция для создает  экземпляр маршрутизатора
 func NewRouter(logger *log.Logger) *Server {
 	router := http.NewServeMux()
 	api.Init(router)

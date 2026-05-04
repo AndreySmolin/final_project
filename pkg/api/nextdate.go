@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// NextDate функция расчитывает следующюю дату в зависимости от правила
 func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 	parameters := "dywm"
 	date, err := time.Parse(FormatDate, dstart)
@@ -57,6 +58,7 @@ func NextDate(now time.Time, dstart string, repeat string) (string, error) {
 	return "", errors.New("unknown error func NextDate")
 }
 
+// AfterNow функция  возвращает true, если первая дата больше второй
 func afterNow(date, now time.Time) bool {
 	return date.Format(FormatDate) > now.Format(FormatDate)
 }

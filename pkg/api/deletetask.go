@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// deleteTaskHandler функция удаляет задачу по id
 func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	var errorMessage ErrorMessage
 	var message struct{}

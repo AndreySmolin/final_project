@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// postDoneHandler функция отмечает задачу выполненной и если есть правило то дублирует с новой датой
 func postDoneHandler(w http.ResponseWriter, r *http.Request) {
 	var errorMessage ErrorMessage
 	var message struct{}

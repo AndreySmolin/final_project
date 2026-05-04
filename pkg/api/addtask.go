@@ -10,13 +10,17 @@ import (
 	"time"
 )
 
+// ErrorMessage структура для отправки клиенту ошибки
 type ErrorMessage struct {
 	Error string `json:"error"`
 }
+
+// IDMessage структура для отправки клиенту id задачи
 type IDMessage struct {
 	Id string `json:"id"`
 }
 
+// addTaskHandler функция для добавления задачи
 func addTaskHandler(w http.ResponseWriter, r *http.Request) {
 	var task db.Task
 	var errorMessage ErrorMessage
@@ -51,6 +55,7 @@ func addTaskHandler(w http.ResponseWriter, r *http.Request) {
 	writeJson(w, idMessage)
 }
 
+// writeJson функция для сериализации и отправки JSON клиенту
 func writeJson(w http.ResponseWriter, data any) {
 	resp, err := json.Marshal(data)
 	if err != nil {
@@ -60,6 +65,7 @@ func writeJson(w http.ResponseWriter, data any) {
 	w.Write(resp)
 }
 
+// checkDate проверяет на корректность полученное значение task.Date
 func checkDate(task *db.Task) error {
 	now := time.Now()
 	if task.Date == "" {

@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// NextDayHandler функция обрабочик для вычисления следующей даты с последующим отправлением на сервер
 func NextDayHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -28,6 +29,7 @@ func NextDayHandler(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, nextd)
 }
 
+// taskHandler функция обработчик для задачи в зависимости от метода
 func taskHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 
@@ -41,6 +43,8 @@ func taskHandler(w http.ResponseWriter, r *http.Request) {
 		deleteTaskHandler(w, r)
 	}
 }
+
+// tasksHandler функция обработчик для множества задач
 func tasksHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -48,6 +52,8 @@ func tasksHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	getTasksHandler(w, r)
 }
+
+// doneHandler функция обработчик для выполненой задачи
 func doneHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

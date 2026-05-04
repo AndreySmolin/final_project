@@ -7,6 +7,7 @@ import (
 	"strconv"
 )
 
+// Task структура задачи
 type Task struct {
 	ID      string `json:"id"`
 	Date    string `json:"date"`
@@ -15,6 +16,7 @@ type Task struct {
 	Repeat  string `json:"repeat"`
 }
 
+// AddTask функция добавляет задачу в базу данных
 func AddTask(task *Task) (int64, error) {
 	var id int64
 	query := `INSERT INTO scheduler (date,title,comment,repeat) VALUES ($1, $2, $3, $4)`
@@ -25,6 +27,7 @@ func AddTask(task *Task) (int64, error) {
 	return id, err
 }
 
+// GetTask функция получения задачи по id
 func GetTask(id string) (*Task, error) {
 	task := Task{}
 	query := `SELECT date, title, comment, repeat FROM scheduler WHERE id = :id`
@@ -40,6 +43,7 @@ func GetTask(id string) (*Task, error) {
 	return &task, nil
 }
 
+// UpdateTask функция обновляет все параметры задачи по id
 func UpdateTask(task *Task) error {
 	query := `UPDATE scheduler SET date=$1, title=$2, comment=$3, repeat=$4 WHERE id =$5`
 	res, err := db.Exec(query, task.Date, task.Title, task.Comment, task.Repeat, task.ID)
@@ -56,6 +60,7 @@ func UpdateTask(task *Task) error {
 	return nil
 }
 
+// Tasks функция получения всех задач из базы данных
 func Tasks(limit int) ([]*Task, error) {
 	rows, err := db.Query(`SELECT * FROM scheduler`)
 	if err != nil {
@@ -73,6 +78,8 @@ func Tasks(limit int) ([]*Task, error) {
 	}
 	return sliceTask, nil
 }
+
+// DeleteTask функция удаления задачи из базы данных по id
 func DeleteTask(id string) error {
 	res, err := db.Exec(`DELETE FROM scheduler WHERE id = :id`, sql.Named("id", id))
 	if err != nil {
@@ -88,6 +95,7 @@ func DeleteTask(id string) error {
 	return nil
 }
 
+// UpdateDate функция обновления даты задачи по id
 func UpdateDate(next string, id string) error {
 	query := `UPDATE scheduler SET date=$1 WHERE id =$2`
 	ide, _ := strconv.Atoi(id)

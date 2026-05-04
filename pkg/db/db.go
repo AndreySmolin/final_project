@@ -11,6 +11,7 @@ import (
 
 var db *sql.DB
 
+// chema константа с командами для создания таблицы
 const chema string = `CREATE TABLE scheduler (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	date CHAR(8) NOT NULL DEFAULT "",
@@ -20,6 +21,7 @@ const chema string = `CREATE TABLE scheduler (
 );
 CREATE INDEX IDX_DATE ON scheduler(date);`
 
+// Init функция открывает базу данных и при необходимости создает таблицу
 func Init(dbNAME string) error {
 	_, err := os.Stat(dbNAME)
 	var install bool
@@ -48,6 +50,7 @@ func Init(dbNAME string) error {
 	return nil
 }
 
+// CreateTable создает таблицу
 func CreateTable(db *sql.DB) (sql.Result, error) {
 	result, err := db.Exec(chema)
 	if err != nil {

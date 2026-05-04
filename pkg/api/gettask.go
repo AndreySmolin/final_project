@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// getTaskHandler функция получает задачу по id
 func getTaskHandler(w http.ResponseWriter, r *http.Request) {
 	var errorMessage ErrorMessage
 	id := r.URL.Query().Get("id")

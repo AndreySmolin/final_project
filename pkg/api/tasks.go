@@ -5,10 +5,12 @@ import (
 	"net/http"
 )
 
+// TasksResp структура для вывода задач списком
 type TasksResp struct {
 	Tasks []*db.Task `json:"tasks"`
 }
 
+// getTasksHandler функция получает задачу и заносит в список TasksResp с последующим отправление клиенту
 func getTasksHandler(w http.ResponseWriter, r *http.Request) {
 	var errorMessage ErrorMessage
 	tasks, err := db.Tasks(50)
