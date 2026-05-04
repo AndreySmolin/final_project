@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strconv"
 )
 
 type Task struct {
@@ -71,4 +72,35 @@ func Tasks(limit int) ([]*Task, error) {
 		sliceTask = append(sliceTask, &task)
 	}
 	return sliceTask, nil
+}
+func DeleteTask(id string) error {
+	res, err := db.Exec(`DELETE FROM scheduler WHERE id = :id`, sql.Named("id", id))
+	if err != nil {
+		return err
+	}
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		return fmt.Errorf(`incorrect id for delete task`)
+	}
+	return nil
+}
+
+func UpdateDate(next string, id string) error {
+	query := `UPDATE scheduler SET date=$1 WHERE id =$2`
+	ide, _ := strconv.Atoi(id)
+	res, err := db.Exec(query, next, ide)
+	if err != nil {
+		return err
+	}
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		return fmt.Errorf(`incorrect id for updating task`)
+	}
+	return nil
 }

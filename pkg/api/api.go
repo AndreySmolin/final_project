@@ -14,4 +14,5 @@ func Init(router *http.ServeMux) {
 	router.HandleFunc("/api/nextdate", NextDayHandler)
 	router.HandleFunc("/api/task", taskHandler)
 	router.HandleFunc("/api/tasks", tasksHandler)
+	router.HandleFunc("/api/task/done", doneHandler)
 }

@@ -37,6 +37,8 @@ func taskHandler(w http.ResponseWriter, r *http.Request) {
 		getTaskHandler(w, r)
 	case http.MethodPut:
 		putTaskHandler(w, r)
+	case http.MethodDelete:
+		deleteTaskHandler(w, r)
 	}
 }
 func tasksHandler(w http.ResponseWriter, r *http.Request) {
@@ -45,4 +47,11 @@ func tasksHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	getTasksHandler(w, r)
+}
+func doneHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	postDoneHandler(w, r)
 }
