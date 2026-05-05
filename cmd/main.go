@@ -8,14 +8,14 @@ import (
 )
 
 func main() {
-	err := db.Init("./internal/db/scheduler.db")
-	defer db.CloseDB()
 	logger := log.New(os.Stdout, "Server:", log.LstdFlags)
-	server := server.NewRouter(logger)
-	logger.Print("Start port:7540")
+	err := db.Init("./internal/db/scheduler.db")
 	if err != nil {
 		logger.Fatalf("Fatal error:%v", err)
 	}
+	defer db.CloseDB()
+	server := server.NewRouter(logger)
+	logger.Print("Start port:7540")
 	err = server.Http.ListenAndServe()
 	if err != nil {
 		logger.Fatalf("Fatal error:%v", err)
