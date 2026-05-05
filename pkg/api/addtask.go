@@ -5,6 +5,7 @@ import (
 	"final_project/pkg/db"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -26,24 +27,23 @@ func addTaskHandler(w http.ResponseWriter, r *http.Request) {
 	var errorMessage ErrorMessage
 	var idMessage IDMessage
 	body, err := io.ReadAll(r.Body)
-	defer r.Body.Close()
 	if err != nil {
 		http.Error(w, "error reading json"+err.Error(), http.StatusBadRequest)
 		return
 	}
 	if err = json.Unmarshal(body, &task); err != nil {
 		errorMessage.Error = "error deserializing JSON:" + err.Error()
-		writeJson(w, errorMessage)
+		writeJson(w, errorMessage, http.StatusBadRequest)
 		return
 	}
 	if task.Title == "" {
 		errorMessage.Error = "Task title is missing"
-		writeJson(w, errorMessage)
+		writeJson(w, errorMessage, http.StatusBadRequest)
 		return
 	}
 	if err = checkDate(&task); err != nil {
 		errorMessage.Error = err.Error()
-		writeJson(w, errorMessage)
+		writeJson(w, errorMessage, http.StatusBadRequest)
 		return
 	}
 	id, err := db.AddTask(&task)
@@ -52,17 +52,21 @@ func addTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	idMessage.Id = strconv.FormatInt(id, 10)
-	writeJson(w, idMessage)
+	writeJson(w, idMessage, http.StatusOK)
 }
 
 // writeJson функция для сериализации и отправки JSON клиенту
-func writeJson(w http.ResponseWriter, data any) {
+func writeJson(w http.ResponseWriter, data any, code int) {
 	resp, err := json.Marshal(data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.Write(resp)
+	w.WriteHeader(code)
+	_, err = w.Write(resp)
+	if err != nil {
+		log.Println("write failed:", err)
+	}
 }
 
 // checkDate проверяет на корректность полученное значение task.Date

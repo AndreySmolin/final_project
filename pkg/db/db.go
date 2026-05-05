@@ -41,6 +41,7 @@ func Init(dbNAME string) error {
 		if err != nil {
 			return err
 		}
+		db.Close()
 		return nil
 	}
 	db, err = sql.Open("sqlite", dbNAME)

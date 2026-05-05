@@ -12,8 +12,8 @@ func getTaskHandler(w http.ResponseWriter, r *http.Request) {
 	task, err := db.GetTask(id)
 	if err != nil {
 		errorMessage.Error = "error retrieving task:" + err.Error()
-		writeJson(w, errorMessage)
+		writeJson(w, errorMessage, http.StatusBadRequest)
 		return
 	}
-	writeJson(w, task)
+	writeJson(w, task, http.StatusOK)
 }

@@ -20,24 +20,24 @@ func putTaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if err = json.Unmarshal(body, &task); err != nil {
 		errorMessage.Error = "error deserializing JSON:" + err.Error()
-		writeJson(w, errorMessage)
+		writeJson(w, errorMessage, http.StatusBadRequest)
 		return
 	}
 	if task.Title == "" {
 		errorMessage.Error = "Task title is missing"
-		writeJson(w, errorMessage)
+		writeJson(w, errorMessage, http.StatusBadRequest)
 		return
 	}
 	if err = checkDate(&task); err != nil {
 		errorMessage.Error = err.Error()
-		writeJson(w, errorMessage)
+		writeJson(w, errorMessage, http.StatusBadRequest)
 		return
 	}
 	err = db.UpdateTask(&task)
 	if err != nil {
 		errorMessage.Error = err.Error()
-		writeJson(w, errorMessage)
+		writeJson(w, errorMessage, http.StatusBadRequest)
 		return
 	}
-	writeJson(w, message)
+	writeJson(w, message, http.StatusOK)
 }

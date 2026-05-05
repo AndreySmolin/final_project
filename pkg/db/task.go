@@ -61,20 +61,23 @@ func UpdateTask(task *Task) error {
 }
 
 // Tasks функция получения всех задач из базы данных
-func Tasks(limit int) ([]*Task, error) {
+func Tasks(limit int) ([]Task, error) {
 	rows, err := db.Query(`SELECT * FROM scheduler`)
 	if err != nil {
 		return nil, fmt.Errorf("error in SELECT statement:%w", err)
 	}
 	defer rows.Close()
-	sliceTask := make([]*Task, 0, limit)
+	sliceTask := make([]Task, 0, limit)
 	for rows.Next() {
 		task := Task{}
 		err = rows.Scan(&task.ID, &task.Date, &task.Title, &task.Comment, &task.Repeat)
 		if err != nil {
 			return nil, fmt.Errorf("column copy error:%w", err)
 		}
-		sliceTask = append(sliceTask, &task)
+		sliceTask = append(sliceTask, task)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("column copy error(iteration errors):%w", err)
 	}
 	return sliceTask, nil
 }

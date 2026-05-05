@@ -13,8 +13,8 @@ func deleteTaskHandler(w http.ResponseWriter, r *http.Request) {
 	err := db.DeleteTask(id)
 	if err != nil {
 		errorMessage.Error = "error delete :" + err.Error()
-		writeJson(w, errorMessage)
+		writeJson(w, errorMessage, http.StatusBadRequest)
 		return
 	}
-	writeJson(w, message)
+	writeJson(w, message, http.StatusOK)
 }
